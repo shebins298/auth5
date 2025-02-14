@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, User</h1>
+        <p>You have successfully logged in.</p>
+
+        <button id="logout">Logout</button>
+    </div>
+
+    <!-- ✅ Firebase SDK Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- ✅ Firebase Configuration -->
+    <script src="firebase-config.js"></script>
+
+    <!-- ✅ User Panel Logic -->
+    <script>
+        // Ensure Firebase is loaded
+        if (typeof firebase !== "undefined") {
+            console.log("✅ Firebase SDK loaded!");
+        } else {
+            console.error("❌ Firebase SDK not loaded. Check script order!");
+        }
+
+        const auth = firebase.auth();
+
+        // Logout Function
+        document.getElementById("logout").addEventListener("click", () => {
+            auth.signOut().then(() => {
+                console.log("✅ User logged out.");
+                window.location.href = "index.html";
+            }).catch(error => {
+                console.error("❌ Logout Error:", error);
+            });
+        });
+
+        // Authentication State Handling
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                console.log("❌ No user logged in. Redirecting to login...");
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+</html>
